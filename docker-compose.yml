@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  app:   # Service名
+    image: "node:latest"
+    container_name: node   # Dockerコンテナ名 
+    working_dir: /usr/src/app  # 作業ディレクトリの指定
+    volumes:
+      - type: bind   # マウントタイプ
+        source: ./app   # マウント先
+        target: /usr/src/app   # マウントされるコンテナのパス
+    tty: true   # コンテナを起動させ続ける。
+    ports:
+    - "8000:3000"
+
+  mysql:
+    platform: linux/x86_64 # Mac M1 の場合
+    image: mysql:5.7
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=test
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=test
+    ports:
+      - "3306:3306"
